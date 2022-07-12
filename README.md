@@ -1,7 +1,10 @@
 `capf-bibtex` provides a backend using Emacs's native `completion-at-point`
 function for the completion of bibtex keys in modes used for prose writing. This
 backend activates for citation styles used by `pandoc-mode` (@), `latex-mode`
-(\cite{}), and `org-mode` (cite:@).
+(\cite{}), and `org-mode` (cite:@). This package is largely a port of
+`company-bibtex` to Emacs's native completion framework. It works particularly
+well with [corfu](https://github.com/minad/corfu), which enhances completion at
+point with a small completion popup.
 
 # Initialization 
 
