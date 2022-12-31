@@ -71,8 +71,9 @@
   (let ((bibkey (cdr (assoc "=key=" bibentry)))
 	    (author (cdr (assoc "author" bibentry)))
         (editor (cdr (assoc "editor" bibentry)))
-	    (title  (cdr (assoc "shorttitle" bibentry))))
-    (propertize bibkey :author (or author editor) :title title)))
+	    (title  (cdr (assoc "title" bibentry)))
+        (shorttitle  (cdr (assoc "shorttitle" bibentry))))
+    (propertize bibkey :author (or author editor) :title (or shorttitle title))))
 
 (defun capf-bibtex-parse-bibliography ()
   "Parse BibTeX entries listed in the current buffer.
@@ -93,13 +94,11 @@
   (let ((prefix-length 0))
     (concat
      (replace-regexp-in-string "{\\|}" ""
-			                   (format "  %s"
-				                       (get-text-property prefix-length :author candidate)))
+			                   (format "   %s "
+				                       (get-text-property prefix-length :title candidate)))
      (replace-regexp-in-string "{\\|}" ""
-			                   (format " – %s "
-				                       (get-text-property prefix-length :title candidate))))))
-
-
+			                   (format "   %s"
+				                       (get-text-property prefix-length :author candidate))))))
 
 ;;;###autoload
 (defun capf-bibtex (&optional arg &rest ignored)
