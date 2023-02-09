@@ -2,7 +2,7 @@
 
 ;; Author: Colin McLear
 ;; Maintainer: Colin McLear
-;; Version: 0.1
+;; Version: 1.0
 ;; Package-Requires: ((emacs "27.1") (parsebib "3.0") (org "9.5"))
 ;; Homepage: https://github.com/mclear-tools/bibtex-capf
 ;; Keywords: bibtex, convenience
