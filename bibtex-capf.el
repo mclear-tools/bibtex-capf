@@ -66,7 +66,7 @@
 
 (defun bibtex-capf-build-candidate (bibentry)
   "Build a string---the bibtex key---with author and title properties attached.
-  This is drawn from BIBENTRY, an element in the list produced
+This is drawn from BIBENTRY, an element in the list produced
   by `bibtex-capf-parse-bibliography'."
   (let ((bibkey (cdr (assoc "=key=" bibentry)))
 	    (author (cdr (assoc "author" bibentry)))
@@ -101,7 +101,7 @@
 				                       (get-text-property prefix-length :author candidate))))))
 
 ;;;###autoload
-(defun bibtex-capf (&optional arg &rest ignored)
+(defun bibtex-capf ()
   "Complete citation key at point for org, markdown, or latex."
   (let ((bibtex-capf-latex-regex "\\(?:cite\\(?:\\(?:[pt]\\*\\|[pt]\\)?{\\)\\)\\([[:alnum:]_-]*,\\)*\\([[:alnum:]_-]*\\)")
         (bibtex-capf-markdown-regexp (concat "-?@"                         ; @ preceded by optional -
