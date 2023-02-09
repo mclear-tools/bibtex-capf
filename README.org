@@ -1,4 +1,4 @@
-=capf-bibtex= provides a backend using Emacs's native =completion-at-point= function
+=bibtex-capf= provides a backend using Emacs's native =completion-at-point= function
 for the completion of bibtex keys in modes used for prose writing. This backend
 activates for citation styles used by =pandoc-mode= (@), =latex-mode= (\cite{}), and
 =org-mode= (cite:@). This package is largely a port of =company-bibtex= to Emacs's
@@ -12,16 +12,16 @@ enhances completion at point with a small completion popup.
 :PROPERTIES:
 :CUSTOM_ID: initialization
 :END:
-Load the package and add =capf-bibtex= to =capf-backends= (there is a
-minor mode -- =capf-bibtex-mode= -- for easy activation and deactivation
+Load the package and add =bibtex-capf= to =capf-backends= (there is a
+minor mode -- =bibtex-capf-mode= -- for easy activation and deactivation
 of the capf) using use-package and straight:
 
 #+begin_example
-(use-package capf-bibtex
-  :straight (:type git :host github :repo "mclear-tools/capf-bibtex")
-  :hook ((org-mode markdown-mode tex-mode latex-mode reftex-mode) . capf-bibtex-mode)
+(use-package bibtex-capf
+  :straight (:type git :host github :repo "mclear-tools/bibtex-capf")
+  :hook ((org-mode markdown-mode tex-mode latex-mode reftex-mode) . bibtex-capf-mode)
   :custom
-  (capf-bibtex-bibliography
+  (bibtex-capf-bibliography
    '("path/to/bib/file.bib")))
 #+end_example
 
@@ -29,11 +29,11 @@ of the capf) using use-package and straight:
 :PROPERTIES:
 :CUSTOM_ID: customization
 :END:
-=capf-bibtex= reads from a bibliography file or files specified in
-=capf-bibtex-bibliography=:
+=bibtex-capf= reads from a bibliography file or files specified in
+=bibtex-capf-bibliography=:
 
 #+begin_example
-(setq capf-bibtex-bibliography
+(setq bibtex-capf-bibliography
     '("/home/cooluser/thesis/thesis1.bib"
       "/home/cooluser/thesis/thesi2.bib"))
 #+end_example
