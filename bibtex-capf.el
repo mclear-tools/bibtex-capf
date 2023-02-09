@@ -1,4 +1,4 @@
-;;; bibtex-capf.el --- completion at point for bibtex --- *- lexical-binding: t -*-
+;;; bibtex-capf.el --- Completion at point for bibtex --- *- lexical-binding: t -*-
 
 ;; Author: Colin McLear
 ;; Maintainer: Colin McLear
@@ -151,6 +151,7 @@ This is drawn from BIBENTRY, an element in the list produced
                 (insert)))))))
 
 ;;;; Define Minor Mode
+;;;###autoload
 (define-minor-mode bibtex-capf-mode
   "Create a global minor mode for `bibtex-capf'.
 This adds hooks and the `bibtex-capf' function to the relevant modes."
