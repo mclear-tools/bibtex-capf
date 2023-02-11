@@ -159,12 +159,11 @@ This adds hooks and the `bibtex-capf' function to the relevant modes."
   :global t
   (cond (bibtex-capf-mode
          ;; add to completion framework
-         (add-hook 'completion-at-point-functions #'bibtex-capf -90 t)
-         (add-to-list 'completion-at-point-functions #'bibtex-capf))
+         (setq old-capf completion-at-point-functions)
+         (add-hook 'completion-at-point-functions #'bibtex-capf -90 t))
         (t
          (remove-hook 'completion-at-point-functions #'bibtex-capf)
-         (remove #'bibtex-capf completion-at-point-functions))))
-
+         (setq completion-at-point-functions old-capf))))
 
 (provide 'bibtex-capf)
 ;;; bibtex-capf.el ends here
