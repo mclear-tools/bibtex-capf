@@ -160,7 +160,7 @@ This adds hooks and the `bibtex-capf' function to the relevant modes."
   (cond (bibtex-capf-mode
          ;; add to completion framework
          (setq old-capf completion-at-point-functions)
-         (add-hook 'completion-at-point-functions #'bibtex-capf -90 t))
+         (add-hook 'completion-at-point-functions #'bibtex-capf -90))
         (t
          (remove-hook 'completion-at-point-functions #'bibtex-capf)
          (setq completion-at-point-functions old-capf))))
