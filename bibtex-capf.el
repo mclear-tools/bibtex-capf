@@ -158,19 +158,21 @@ This is drawn from BIBENTRY, an element in the list produced
          ((derived-mode-p 'latex-mode)
           (looking-back bibtex-capf-latex-regex 2)))
 
-      (let* ((candidates
-              (bibtex-capf-candidates))
-             (begin (save-excursion (backward-word) (point)))
-             (end (point)))
+      (let ((candidates
+             (bibtex-capf-candidates))
+            (bounds (bounds-of-thing-at-point 'word)))
 
-        (list begin end candidates
-              :annotation-function
-              (lambda (str)
-                (bibtex-capf-get-annotations str))
-              :exit-function
-              (lambda (str _status)
-                ;; take completion str and replace with key
-                (insert)))))))
+        (when bounds
+          (list (car bounds)
+                (cdr bounds)
+                candidates
+                :annotation-function
+                (lambda (str)
+                  (bibtex-capf-get-annotations str))
+                :exit-function
+                (lambda (str _status)
+                  ;; take completion str and replace with key
+                  (insert))))))))
 
 ;;;; Define Minor Mode
 ;;;###autoload
@@ -182,7 +184,8 @@ This adds hooks and the `bibtex-capf' function to the relevant modes."
   (cond (bibtex-capf-mode
          ;; add to completion framework
          (setq old-capf completion-at-point-functions)
-         (add-hook 'completion-at-point-functions #'bibtex-capf -90))
+         (add-hook 'completion-at-point-functions #'bibtex-capf -90)
+         (add-to-list 'completion-at-point-functions #'bibtex-capf))
         (t
          (remove-hook 'completion-at-point-functions #'bibtex-capf)
          (setq completion-at-point-functions old-capf))))
