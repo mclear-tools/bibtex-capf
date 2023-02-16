@@ -52,6 +52,11 @@
   :type '(choice (file :must-match t)
                  (repeat (file :must-match t))))
 
+(defcustom bibtex-capf-title-author-seperator "|"
+  "Separator between title and author entries."
+  :group 'bibtex-capf
+  :type 'string)
+
 ;;;; Functions
 
 (defun bibtex-capf-candidates ()
@@ -92,22 +97,24 @@ This is drawn from BIBENTRY, an element in the list produced
 (defun bibtex-capf-get-title (candidate)
   "Get data from CANDIDATE for annotations."
   (replace-regexp-in-string "{\\|}" ""
-			                (format "  %s"
+			                (format " %s"
 				                    (get-text-property 0 :title candidate))))
 
 (defun bibtex-capf-get-author (candidate)
   "Get data from CANDIDATE for annotations."
   (replace-regexp-in-string "{\\|}" ""
-			                (format " | %s"
+			                (format " %s"
 				                    (get-text-property 0 :author candidate))))
 
 (defun bibtex-capf-get-annotations (candidate)
   "Get data from CANDIDATE for annotations."
   (concat
+   "  "
    (truncate-string-to-width
     (bibtex-capf-get-title candidate)
     55 nil 32 t)
    "  "
+   bibtex-capf-title-author-seperator
    (truncate-string-to-width
     (or (bibtex-capf-get-author candidate)
         "")
