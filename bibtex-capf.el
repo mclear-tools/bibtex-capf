@@ -89,16 +89,31 @@ This is drawn from BIBENTRY, an element in the list produced
                      (cons (downcase (car it)) (cdr it)))
                    (parsebib-read-entry entry-type))))
 
+(defun bibtex-capf-get-title (candidate)
+  "Get data from CANDIDATE for annotations."
+  (replace-regexp-in-string "{\\|}" ""
+			                (format "  %s"
+				                    (get-text-property 0 :title candidate))))
+
+(defun bibtex-capf-get-author (candidate)
+  "Get data from CANDIDATE for annotations."
+  (replace-regexp-in-string "{\\|}" ""
+			                (format " | %s"
+				                    (get-text-property 0 :author candidate))))
+
 (defun bibtex-capf-get-annotations (candidate)
   "Get data from CANDIDATE for annotations."
-  (let ((prefix-length 0))
-    (concat
-     (replace-regexp-in-string "{\\|}" ""
-			                   (format "   %s "
-				                       (get-text-property prefix-length :title candidate)))
-     (replace-regexp-in-string "{\\|}" ""
-			                   (format "   %s"
-				                       (get-text-property prefix-length :author candidate))))))
+  (concat
+   (truncate-string-to-width
+    (bibtex-capf-get-title candidate)
+    55 nil 32 t)
+   "  "
+   (truncate-string-to-width
+    (or (bibtex-capf-get-author candidate)
+        "")
+    20 nil 32)
+   " "
+   ))
 
 ;;;###autoload
 (defun bibtex-capf ()
