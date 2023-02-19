@@ -57,6 +57,9 @@
   :group 'bibtex-capf
   :type 'string)
 
+(defvar bibtex-capf-old-capf nil
+  "Save old capf settings.")
+
 ;;;; Functions
 
 (defun bibtex-capf-candidates ()
@@ -119,8 +122,7 @@ This is drawn from BIBENTRY, an element in the list produced
     (or (bibtex-capf-get-author candidate)
         "")
     20 nil 32)
-   " "
-   ))
+   " "))
 
 ;;;###autoload
 (defun bibtex-capf ()
