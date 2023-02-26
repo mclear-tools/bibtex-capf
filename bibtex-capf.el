@@ -57,8 +57,7 @@
   :group 'bibtex-capf
   :type 'string)
 
-(defvar bibtex-capf-old-capf nil
-  "Save old capf settings.")
+(defvar bibtex-capf-old-capf)
 
 ;;;; Functions
 
@@ -185,12 +184,12 @@ This adds hooks and the `bibtex-capf' function to the relevant modes."
   :global t
   (cond (bibtex-capf-mode
          ;; add to completion framework
-         (setq old-capf completion-at-point-functions)
+         (setq bibtex-capf-old-capf completion-at-point-functions)
          (add-hook 'completion-at-point-functions #'bibtex-capf -90)
          (add-to-list 'completion-at-point-functions #'bibtex-capf))
         (t
          (remove-hook 'completion-at-point-functions #'bibtex-capf)
-         (setq completion-at-point-functions old-capf))))
+         (setq completion-at-point-functions bibtex-capf-old-capf))))
 
 (provide 'bibtex-capf)
 ;;; bibtex-capf.el ends here
