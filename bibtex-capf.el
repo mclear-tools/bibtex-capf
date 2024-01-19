@@ -96,9 +96,9 @@
 This is drawn from BIBENTRY, an element in the list produced
   by `bibtex-capf-parse-bibliography'."
   (let ((bibkey (cdr (assoc "=key=" bibentry)))
-            (author (cdr (assoc "author" bibentry)))
+        (author (cdr (assoc "author" bibentry)))
         (editor (cdr (assoc "editor" bibentry)))
-            (title  (cdr (assoc "title" bibentry)))
+        (title  (cdr (assoc "title" bibentry)))
         (shorttitle  (cdr (assoc "shorttitle" bibentry))))
     (propertize bibkey :author (or author editor) :title (or shorttitle title))))
 
@@ -119,14 +119,14 @@ This is drawn from BIBENTRY, an element in the list produced
 (defun bibtex-capf-get-title (candidate)
   "Get data from CANDIDATE for annotations."
   (replace-regexp-in-string "{\\|}" ""
-                                        (format " %s"
-                                                    (get-text-property 0 :title candidate))))
+                            (format " %s"
+                                    (get-text-property 0 :title candidate))))
 
 (defun bibtex-capf-get-author (candidate)
   "Get data from CANDIDATE for annotations."
   (replace-regexp-in-string "{\\|}" ""
-                                        (format " %s"
-                                                    (get-text-property 0 :author candidate))))
+                            (format " %s"
+                                    (get-text-property 0 :author candidate))))
 
 (defun bibtex-capf-get-annotations (candidate)
   "Get data from CANDIDATE for annotations."
