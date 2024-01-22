@@ -1,4 +1,4 @@
-;;; bibtex-capf.el --- Completion at point for bibtex --- *- lexical-binding: t -*-
+;;; bibtex-capf.el --- Completion at point for bibtex -*- lexical-binding: t -*-
 
 ;; Author: Colin McLear
 ;; Maintainer: Colin McLear
@@ -59,26 +59,46 @@
 
 (defvar bibtex-capf-old-capf)
 
+(defvar bibtex-capf-candidates-cache nil)
+
 ;;;; Functions
 
 (defun bibtex-capf-candidates ()
   "Parse .bib file for candidates and return list of keys."
-  (let ((bib-paths (if (listp bibtex-capf-bibliography)
-                       bibtex-capf-bibliography
-                     (list bibtex-capf-bibliography))))
-    (with-temp-buffer
-      (mapc #'insert-file-contents bib-paths)
-      (mapcar (function (lambda (x) (bibtex-capf-build-candidate x)))
-              (bibtex-capf-parse-bibliography)))))
+  (let* ((bib-paths (if (listp bibtex-capf-bibliography)
+                        bibtex-capf-bibliography
+                     (list bibtex-capf-bibliography)))
+         (cache-sum (bibtex-capf-bib-modification-sum bib-paths))
+         (last-sum (or (get-register 'bibtex-capf-candidates-sum) 0)))
+    (when (or (not bibtex-capf-candidates-cache)
+              (/= cache-sum last-sum))
+      (set-register 'bibtex-capf-candidates-sum cache-sum)
+      (setq bibtex-capf-candidates-cache
+            (with-temp-buffer
+              (mapc #'insert-file-contents bib-paths)
+              (mapcar (lambda (x) (bibtex-capf-build-candidate x))
+                      (bibtex-capf-parse-bibliography)))))
+    bibtex-capf-candidates-cache))
+
+(defun bibtex-capf-bib-modification-sum (bib-paths)
+  "Return the sum of the modification times of BIB-PATHS."
+  (seq-reduce #'+ (mapcar (lambda (f)
+                            (string-to-number
+                             (format-time-string
+                              "%s"
+                              (file-attribute-modification-time
+                               (file-attributes (file-truename f))))))
+                          bib-paths)
+              0))
 
 (defun bibtex-capf-build-candidate (bibentry)
   "Build a string---the bibtex key---with author and title properties attached.
 This is drawn from BIBENTRY, an element in the list produced
   by `bibtex-capf-parse-bibliography'."
   (let ((bibkey (cdr (assoc "=key=" bibentry)))
-	    (author (cdr (assoc "author" bibentry)))
+        (author (cdr (assoc "author" bibentry)))
         (editor (cdr (assoc "editor" bibentry)))
-	    (title  (cdr (assoc "title" bibentry)))
+        (title  (cdr (assoc "title" bibentry)))
         (shorttitle  (cdr (assoc "shorttitle" bibentry))))
     (propertize bibkey :author (or author editor) :title (or shorttitle title))))
 
@@ -99,14 +119,14 @@ This is drawn from BIBENTRY, an element in the list produced
 (defun bibtex-capf-get-title (candidate)
   "Get data from CANDIDATE for annotations."
   (replace-regexp-in-string "{\\|}" ""
-			                (format " %s"
-				                    (get-text-property 0 :title candidate))))
+                            (format " %s"
+                                    (get-text-property 0 :title candidate))))
 
 (defun bibtex-capf-get-author (candidate)
   "Get data from CANDIDATE for annotations."
   (replace-regexp-in-string "{\\|}" ""
-			                (format " %s"
-				                    (get-text-property 0 :author candidate))))
+                            (format " %s"
+                                    (get-text-property 0 :author candidate))))
 
 (defun bibtex-capf-get-annotations (candidate)
   "Get data from CANDIDATE for annotations."
